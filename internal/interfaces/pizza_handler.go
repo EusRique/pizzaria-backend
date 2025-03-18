@@ -1,6 +1,7 @@
 package interfaces
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/EusRique/pizzaria-backend/internal/app"
@@ -24,6 +25,7 @@ func (h *PizzaHandler) CreatePizza(c *gin.Context) {
 	}
 
 	if err := c.ShouldBindJSON(&request); err != nil {
+		log.Println("Error creating pizza:", err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating pizza"})
 		return
 	}
@@ -34,6 +36,7 @@ func (h *PizzaHandler) CreatePizza(c *gin.Context) {
 func (h *PizzaHandler) ListPizzas(c *gin.Context) {
 	pizzas, err := h.service.ListPizzas()
 	if err != nil {
+		log.Println("Error listing pizzas:", err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error listing pizzas"})
 		return
 	}

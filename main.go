@@ -19,5 +19,5 @@ func main() {
 	r.GET("/pizzas", pizzaHandler.ListPizzas)
 
 	fmt.Println("Server running on port 8080")
-	r.Run(":8080")
+	r.Run(":3000")
 }
