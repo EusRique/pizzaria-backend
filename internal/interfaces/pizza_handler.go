@@ -22,7 +22,7 @@ func (h *PizzaHandler) CreatePizza(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&pizza); err != nil {
 		log.Println("Invalid data:", err.Error())
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid data"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Dados inválidos"})
 		return
 	}
 
@@ -33,14 +33,14 @@ func (h *PizzaHandler) CreatePizza(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"message": "Pizza created successfully!"})
+	c.JSON(http.StatusCreated, gin.H{"message": "Pizza criada com sucesso!"})
 }
 
 func (h *PizzaHandler) ListPizzas(c *gin.Context) {
 	pizzas, err := h.service.ListPizzas()
 	if err != nil {
 		log.Println("Error listing pizzas:", err.Error())
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "message": "Error listing pizzas"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "message": "Erro ao buscar pizzas"})
 		return
 	}
 
