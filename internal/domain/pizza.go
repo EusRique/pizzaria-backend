@@ -5,5 +5,5 @@ type Pizza struct {
 	Name        string  `gorm:"type:varchar(255); not null"`
 	Description string  `gorm:"type:text; not null"`
 	Price       float64 `gorm:"type:decimal; not null"`
-	ImageURL    string  `gorm:"type:varchar(255)"`
+	Image       string  `gorm:"type:varchar(255)"`
 }

@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/EusRique/pizzaria-backend/internal/app"
+	"github.com/EusRique/pizzaria-backend/internal/model"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,17 +18,18 @@ func NewPizzaHandler() *PizzaHandler {
 }
 
 func (h *PizzaHandler) CreatePizza(c *gin.Context) {
-	var request struct {
-		Name        string  `json:"name" binding:"required"`
-		Description string  `json:"description" binding:"required"`
-		Price       float64 `json:"price" binding:"required"`
-		ImageURL    string  `json:"image_url"`
+	var pizza model.Pizza
+
+	if err := c.ShouldBindJSON(&pizza); err != nil {
+		log.Println("Invalid data:", err.Error())
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid data"})
+		return
 	}
 
-	if err := c.ShouldBindJSON(&request); err != nil {
+	err := h.service.CreatePizza(pizza.Name, pizza.Description, pizza.Price, pizza.Image)
+	if err != nil {
 		log.Println("Error creating pizza:", err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating pizza"})
-		return
 	}
 
 	c.JSON(http.StatusCreated, gin.H{"message": "Pizza created successfully!"})

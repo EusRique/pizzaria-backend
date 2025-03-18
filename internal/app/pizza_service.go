@@ -13,12 +13,12 @@ func NewPizzaService() *PizzaService {
 	return &PizzaService{repo: repositories.NewPizzaRepository()}
 }
 
-func (s *PizzaService) CreatePizza(name, description string, price float64, imageURL string) error {
+func (s *PizzaService) CreatePizza(name, description string, price float64, image string) error {
 	pizza := domain.Pizza{
 		Name:        name,
 		Description: description,
 		Price:       price,
-		ImageURL:    imageURL,
+		Image:       image,
 	}
 
 	return s.repo.Create(&pizza)
