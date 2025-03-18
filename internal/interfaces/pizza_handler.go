@@ -29,7 +29,8 @@ func (h *PizzaHandler) CreatePizza(c *gin.Context) {
 	err := h.service.CreatePizza(pizza.Name, pizza.Description, pizza.Price, pizza.Image)
 	if err != nil {
 		log.Println("Error creating pizza:", err.Error())
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating pizza"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating pizza", "message": err.Error()})
+		return
 	}
 
 	c.JSON(http.StatusCreated, gin.H{"message": "Pizza created successfully!"})
