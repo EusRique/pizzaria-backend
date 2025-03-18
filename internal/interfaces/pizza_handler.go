@@ -40,7 +40,7 @@ func (h *PizzaHandler) ListPizzas(c *gin.Context) {
 	pizzas, err := h.service.ListPizzas()
 	if err != nil {
 		log.Println("Error listing pizzas:", err.Error())
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error listing pizzas"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "message": "Error listing pizzas"})
 		return
 	}
 
