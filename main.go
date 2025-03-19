@@ -18,6 +18,10 @@ func main() {
 	r.POST("/pizzas", pizzaHandler.CreatePizza)
 	r.GET("/pizzas", pizzaHandler.ListPizzas)
 
+	r.POST("/orders", interfaces.NewOrderHandler().CreateOrder)
+	r.GET("/orders", interfaces.NewOrderHandler().ListOrders)
+	r.PUT("/orders/:id", interfaces.NewOrderHandler().UpdateOrderStatus)
+
 	fmt.Println("Server running on port 8080")
 	r.Run(":3000")
 }

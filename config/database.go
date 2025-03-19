@@ -5,11 +5,10 @@ import (
 	"log"
 	"os"
 
+	"github.com/EusRique/pizzaria-backend/internal/domain"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-
-	"github.com/EusRique/pizzaria-backend/internal/domain"
 )
 
 var DB *gorm.DB
@@ -33,6 +32,6 @@ func InitDB() {
 	}
 
 	DB = db
-	DB.AutoMigrate(&domain.Pizza{}, &domain.Pedido{}, &domain.ItemPedido{})
+	DB.AutoMigrate(&domain.Pizza{}, &domain.Order{}, &domain.OrderItem{})
 	fmt.Println("Database connected!")
 }
