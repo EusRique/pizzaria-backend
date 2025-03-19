@@ -33,6 +33,6 @@ func InitDB() {
 	}
 
 	DB = db
-	DB.AutoMigrate(&domain.Pizza{})
+	DB.AutoMigrate(&domain.Pizza{}, &domain.Pedido{}, &domain.ItemPedido{})
 	fmt.Println("Database connected!")
 }
