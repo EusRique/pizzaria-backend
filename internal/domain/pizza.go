@@ -2,6 +2,7 @@ package domain
 
 import (
 	"fmt"
+	"strings"
 )
 
 type Pizza struct {
@@ -13,15 +14,15 @@ type Pizza struct {
 }
 
 func (pizza *Pizza) IsValid() error {
-	if pizza.Name == "" {
+	if strings.TrimSpace(pizza.Name) == "" {
 		return fmt.Errorf("nome é obrigatório")
 	}
 
-	if pizza.Description == "" {
+	if strings.TrimSpace(pizza.Description) == "" {
 		return fmt.Errorf("descrição é obrigatória")
 	}
 
-	if pizza.Price == 0 {
+	if (pizza.Price) == 0 {
 		return fmt.Errorf("preço é obrigatório")
 	}
 

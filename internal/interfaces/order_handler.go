@@ -20,11 +20,11 @@ func NewOrderHandler() *OrderHandler {
 func (h *OrderHandler) CreateOrder(c *gin.Context) {
 	var order model.Order
 	if err := c.ShouldBindJSON(&order); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Dados inválidos"})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Verifique os dados enviados"})
 		return
 	}
 
-	id, err := h.service.CreateOrder(order.Customer, order.Address, order.Phone, order.Items)
+	id, err := h.service.CreateOrder(order)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error creating order", "message": err.Error()})
 		return
@@ -45,19 +45,19 @@ func (h *OrderHandler) ListOrders(c *gin.Context) {
 func (h *OrderHandler) UpdateOrderStatus(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ID inválido"})
+		c.JSON(http.StatusBadRequest, gin.H{"message": "ID inválido"})
 		return
 	}
 
 	var status model.OrderStatus
 	if err := c.ShouldBindJSON(&status); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Dados inválidos"})
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Verifique os dados enviados"})
 		return
 	}
 
 	err = h.service.UpdateStatus(uint(id), status.Status)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "message": "Erro ao atualizar status"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "message": "Pedido não encontrado ou erro ao atualizar status"})
 		return
 	}
 

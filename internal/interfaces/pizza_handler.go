@@ -22,7 +22,7 @@ func (h *PizzaHandler) CreatePizza(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&pizza); err != nil {
 		log.Println("Invalid data:", err.Error())
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Dados inválidos"})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Verifique os dados enviados"})
 		return
 	}
 

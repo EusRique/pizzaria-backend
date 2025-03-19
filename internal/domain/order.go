@@ -1,8 +1,11 @@
 package domain
 
 import (
-	"errors"
+	"fmt"
+	"strings"
 	"time"
+
+	"github.com/EusRique/pizzaria-backend/internal/model"
 )
 
 type Order struct {
@@ -24,23 +27,59 @@ type OrderItem struct {
 	UnitPrice float64 `gorm:"type:decimal; not null"`
 }
 
-func NewOrder(customer, address, phone string, items []OrderItem) (*Order, error) {
-	if len(items) == 0 {
-		return nil, errors.New("o pedido deve ter pelo menos um item")
+func (order *Order) IsValid() error {
+	if strings.TrimSpace(order.Customer) == "" {
+		return fmt.Errorf("nome é obrigatório")
 	}
 
+	if strings.TrimSpace(order.Address) == "" {
+		return fmt.Errorf("endereço é obrigatório")
+	}
+
+	if len(order.Phone) < 8 {
+		return fmt.Errorf("telefone é obrigatório")
+	}
+
+	if len(order.Items) == 0 {
+		return fmt.Errorf("o pedido deve ter pelo menos um item")
+	}
+
+	for _, item := range order.Items {
+		if item.Quantity == 0 {
+			return fmt.Errorf("quantidade inválida")
+		}
+
+		if item.UnitPrice == 0 {
+			return fmt.Errorf("preço inválido")
+		}
+	}
+
+	return nil
+}
+
+func NewOrder(order model.Order, items []model.OrderItem) (*Order, error) {
 	total := 0.0
-	for _, item := range items {
+	orderItems := make([]OrderItem, len(items))
+	for i, item := range items {
 		total += item.UnitPrice * float64(item.Quantity)
+		orderItems[i] = OrderItem{
+			PizzaID:   item.PizzaID,
+			Quantity:  item.Quantity,
+			UnitPrice: item.UnitPrice,
+		}
 	}
 
-	pedido := Order{
-		Customer: customer,
-		Address:  address,
-		Phone:    phone,
+	orderPurchase := Order{
+		Customer: order.Customer,
+		Address:  order.Address,
+		Phone:    order.Phone,
 		Total:    total,
-		Items:    items,
+		Items:    orderItems,
 	}
 
-	return &pedido, nil
+	if err := orderPurchase.IsValid(); err != nil {
+		return nil, err
+	}
+
+	return &orderPurchase, nil
 }
