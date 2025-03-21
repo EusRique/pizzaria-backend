@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/EusRique/pizzaria-backend/internal/app"
+	"github.com/EusRique/pizzaria-backend/internal/model"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,16 +17,13 @@ func NewPaymentHandler() *PaymentHandler {
 }
 
 func (h *PaymentHandler) CreatePaymentPix(c *gin.Context) {
-	var request struct {
-		Value       float64 `json:"value" binding:"required"`
-		Description string  `json:"description" binding:"required"`
-	}
-	if err := c.ShouldBindJSON(&request); err != nil {
+	var payments model.Payment
+	if err := c.ShouldBindJSON(&payments); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Verifique os dados enviados"})
 		return
 	}
 
-	qrCode, err := h.service.CreatePaymentPix(request.Value, request.Description, "")
+	qrCode, err := h.service.CreatePaymentPix(payments.Value, payments.PedidoID, "")
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Erro ao gerar pagamento"})
 		return

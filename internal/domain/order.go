@@ -14,9 +14,10 @@ type Order struct {
 	Address   string      `gorm:"type:varchar(255); not null"`
 	Phone     string      `gorm:"type:varchar(20); not null"`
 	Total     float64     `gorm:"type:decimal; not null"`
+	Status    string      `gorm:"default:'pending'"`
+	Paid      bool        `gorm:"default:false"`
 	CreatedAt time.Time   `gorm:"type:timestamp; not null"`
 	UpdatedAt time.Time   `gorm:"type:timestamp"`
-	Status    string      `gorm:"default:'pending'"`
 	Items     []OrderItem `gorm:"foreignKey:OrderID"`
 }
 

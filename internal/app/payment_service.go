@@ -26,13 +26,13 @@ func NewPaymentService() *PaymentService {
 	return &PaymentService{client: payment.NewClient(mpConfig)}
 }
 
-func (s *PaymentService) CreatePaymentPix(value float64, description, paymentEmail string) (*payment.Response, error) {
+func (s *PaymentService) CreatePaymentPix(value float64, PedidoID uint, paymentEmail string) (*payment.Response, error) {
 	req := payment.Request{
 		TransactionAmount: value,
-		Description:       fmt.Sprintf("Pagamento do pedido: #%s", description),
+		Description:       fmt.Sprintf("Pagamento do pedido: #%d", PedidoID),
 		PaymentMethodID:   "pix",
 		Payer: &payment.PayerRequest{
-			Email: "email_conta_mercado_pago",
+			Email: "pagante@gmail.com",
 		},
 	}
 
