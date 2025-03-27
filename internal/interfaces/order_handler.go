@@ -63,3 +63,19 @@ func (h *OrderHandler) UpdateOrderStatus(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Status atualizado com sucesso!"})
 }
+
+func (h *OrderHandler) MarkOrderAsPaid(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "ID inválido"})
+		return
+	}
+
+	err = h.service.MarkOrderAsPaid(uint(id))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Erro ao atualizar status do pagamento"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Pagamento atualizado com sucesso!"})
+}

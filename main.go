@@ -16,6 +16,7 @@ func main() {
 	pizzaHandler := interfaces.NewPizzaHandler()
 	orderHandler := interfaces.NewOrderHandler()
 	paymentsHandler := interfaces.NewPaymentHandler()
+	webhooksHandler := interfaces.NewWebhookHandler()
 
 	r.POST("/pizzas", pizzaHandler.CreatePizza)
 	r.GET("/pizzas", pizzaHandler.ListPizzas)
@@ -25,7 +26,7 @@ func main() {
 	r.PUT("/orders/:id/status", orderHandler.UpdateOrderStatus)
 
 	r.POST("/payments/pix", paymentsHandler.CreatePaymentPix)
-
+	r.POST("/webhook/payments", webhooksHandler.ProcessPayment)
 	fmt.Println("Server running on port 8080")
 	r.Run(":3000")
 }

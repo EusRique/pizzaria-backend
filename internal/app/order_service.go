@@ -37,3 +37,7 @@ func (s *OrderService) UpdateStatus(id uint, status string) error {
 
 	return s.repo.UpdateOrderStatus(id, status)
 }
+
+func (s *OrderService) MarkOrderAsPaid(id uint) error {
+	return s.repo.MarkOrderAsPaid(id)
+}
