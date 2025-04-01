@@ -41,3 +41,9 @@ func (s *OrderService) UpdateStatus(id uint, status string) error {
 func (s *OrderService) MarkOrderAsPaid(id uint) error {
 	return s.repo.MarkOrderAsPaid(id)
 }
+
+func (s *OrderService) ListOrdersByStatus(paid bool) ([]domain.Order, error) {
+	var orders []domain.Order
+	err := s.repo.GetOrderByStatus(&orders, paid)
+	return orders, err
+}

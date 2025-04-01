@@ -79,3 +79,20 @@ func (h *OrderHandler) MarkOrderAsPaid(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Pagamento atualizado com sucesso!"})
 }
+
+func (h *OrderHandler) ListOrdersByStatus(c *gin.Context) {
+	status := c.Query("paid")
+
+	paid := false
+	if status == "true" {
+		paid = true
+	}
+
+	orders, err := h.service.ListOrdersByStatus(paid)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Erro ao buscar pedidos"})
+		return
+	}
+
+	c.JSON(http.StatusOK, orders)
+}

@@ -23,6 +23,7 @@ func main() {
 
 	r.POST("/order", orderHandler.CreateOrder)
 	r.GET("/orders", orderHandler.ListOrders)
+	r.GET("/ordersstatus", orderHandler.ListOrdersByStatus)
 	r.PUT("/orders/:id/status", orderHandler.UpdateOrderStatus)
 
 	r.POST("/payments/pix", paymentsHandler.CreatePaymentPix)

@@ -41,3 +41,7 @@ func (r *OrderRepository) UpdateOrderStatus(id uint, status string) error {
 func (r *OrderRepository) MarkOrderAsPaid(id uint) error {
 	return r.db.Model(&domain.Order{}).Where("id = ?", id).Update("paid", true).Error
 }
+
+func (r *OrderRepository) GetOrderByStatus(orders *[]domain.Order, paid bool) error {
+	return r.db.Where("paid = ?", paid).Find(orders).Error
+}
