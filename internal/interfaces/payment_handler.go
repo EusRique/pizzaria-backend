@@ -17,7 +17,7 @@ func NewPaymentHandler() *PaymentHandler {
 }
 
 func (h *PaymentHandler) CreatePaymentPix(c *gin.Context) {
-	var payments model.Payment
+	var payments model.PaymentPix
 	if err := c.ShouldBindJSON(&payments); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Verifique os dados enviados"})
 		return
@@ -25,9 +25,25 @@ func (h *PaymentHandler) CreatePaymentPix(c *gin.Context) {
 
 	qrCode, err := h.service.CreatePaymentPix(payments.Value, payments.PedidoID, "")
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "Erro ao gerar pagamento"})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Erro ao gerar pagamento", "error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"qr_code": qrCode})
+	c.JSON(http.StatusOK, gin.H{"message": qrCode})
+}
+
+func (h *PaymentHandler) CreatePaymentCreditCard(c *gin.Context) {
+	var payments model.PaymentCreditCard
+	if err := c.ShouldBindJSON(&payments); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Verifique os dados enviados"})
+		return
+	}
+
+	status, err := h.service.CreatePaymentCreditCard(payments.Value, payments.PedidoID, payments.Token, payments.Email, payments.PaymentMethod, payments.Installments)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Erro ao processar pagamento", "error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": status})
 }

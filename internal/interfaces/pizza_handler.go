@@ -29,18 +29,18 @@ func (h *PizzaHandler) CreatePizza(c *gin.Context) {
 	err := h.service.CreatePizza(pizza.Name, pizza.Description, pizza.Price, pizza.Image)
 	if err != nil {
 		log.Println("Error creating pizza:", err.Error())
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Error creating pizza", "message": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Erro ao criar cadastro do item", "error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"message": "Pizza criada com sucesso!"})
+	c.JSON(http.StatusCreated, gin.H{"message": "Produto criado com sucesso!"})
 }
 
 func (h *PizzaHandler) ListPizzas(c *gin.Context) {
 	pizzas, err := h.service.ListPizzas()
 	if err != nil {
 		log.Println("Error listing pizzas:", err.Error())
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "message": "Erro ao buscar pizzas"})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Erro ao buscar produto", "error": err.Error()})
 		return
 	}
 

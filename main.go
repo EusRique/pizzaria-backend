@@ -26,7 +26,9 @@ func main() {
 	r.PUT("/orders/:id/status", orderHandler.UpdateOrderStatus)
 
 	r.POST("/payments/pix", paymentsHandler.CreatePaymentPix)
+	r.POST("/payments/creditcard", paymentsHandler.CreatePaymentCreditCard)
 	r.POST("/webhook/payments", webhooksHandler.ProcessPayment)
+
 	fmt.Println("Server running on port 8080")
 	r.Run(":3000")
 }

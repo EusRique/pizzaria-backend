@@ -26,7 +26,7 @@ func (h *OrderHandler) CreateOrder(c *gin.Context) {
 
 	id, err := h.service.CreateOrder(order)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Error creating order", "message": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Erro ao criar o pedido", "error": err.Error()})
 		return
 	}
 
@@ -36,7 +36,7 @@ func (h *OrderHandler) CreateOrder(c *gin.Context) {
 func (h *OrderHandler) ListOrders(c *gin.Context) {
 	orders, err := h.service.ListOrders()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "message": "Erro ao buscar pedidos"})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Erro ao buscar pedidos", "error": err.Error()})
 	}
 
 	c.JSON(http.StatusCreated, orders)
@@ -57,7 +57,7 @@ func (h *OrderHandler) UpdateOrderStatus(c *gin.Context) {
 
 	err = h.service.UpdateStatus(uint(id), status.Status)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error(), "message": "Pedido não encontrado ou erro ao atualizar status"})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Pedido não encontrado ou erro ao atualizar status", "error": err.Error()})
 		return
 	}
 
